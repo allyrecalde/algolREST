@@ -23,9 +23,11 @@
       "esri/layers/GraphicsLayer",
 
       //adding in the module for the feature layers
-      "esri/layers/FeatureLayer"
+      "esri/layers/FeatureLayer",
+      // adding editor
+      "esri/widgets/Editor"
 
-    ], function (esriConfig, Map, MapView, Graphic, GraphicsLayer, FeatureLayer) {
+    ], function (esriConfig, Map, MapView, Graphic, GraphicsLayer, FeatureLayer, Editor) {
 
       esriConfig.apiKey = "AAPK433f41466d60440d91c1c31affdeed39q333BLHYUdTBT9x5jyyBb6p5XkRkl5eFjmdjMaBT3iK9RqETfIR9HgYcNRdNPvtL";
       const map = new Map({
