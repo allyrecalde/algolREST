@@ -1,111 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Set the title of the page -->
   <title>Hello, AGOL! This is a trial edit run!</title>
+  <!-- Set the character set and viewport for responsive design -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="description" content="" />
 
-  <!-- calls for the arcgis api's CSS file and JS library. -->
+  <!-- Include ArcGIS API's CSS file and JS library -->
   <link rel="stylesheet" href="https://js.arcgis.com/4.25/esri/themes/light/main.css">
   <script src="https://js.arcgis.com/4.25/"></script>
 
-  <!-- Adding the modules, API key, and map constant needed for a full screen map app -->
+  <!-- Adding modules, API key, and map constant for a full-screen map app -->
   <script>
-  
     require([
-     "esri/config",
+      "esri/config",
       "esri/Map",
       "esri/views/MapView",
-
-      // adding in the modules for the graphic and graphic layer
       "esri/Graphic",
       "esri/layers/GraphicsLayer",
-
-      //adding in the module for the feature layers
       "esri/layers/FeatureLayer",
-      // adding editor
       "esri/widgets/Editor"
-
     ], function (esriConfig, Map, MapView, Graphic, GraphicsLayer, FeatureLayer, Editor) {
-
+      
+      // Set API key
       esriConfig.apiKey = "AAPK433f41466d60440d91c1c31affdeed39q333BLHYUdTBT9x5jyyBb6p5XkRkl5eFjmdjMaBT3iK9RqETfIR9HgYcNRdNPvtL";
+      
+      // Create a new map with a specified basemap
       const map = new Map({
-        basemap: "arcgis-topographic" // Basemap layer
+        basemap: "arcgis-topographic"
       });
 
+      // Create a view for the map
       const view = new MapView({
-          map: map,
-          center: [-97.7431, 30.2672], // Longitude, latitude
-          zoom: 13, // Zoom level
-          container: "viewDiv" // Div element
-        });
+        map: map,
+        center: [-97.7431, 30.2672],
+        zoom: 13,
+        container: "viewDiv"
+      });
 
-        //adding the const for the graphicslayer
-        const graphicsLayer = new GraphicsLayer();
-        map.add(graphicsLayer);
+      // Create a graphics layer and add it to the map
+      const graphicsLayer = new GraphicsLayer();
+      map.add(graphicsLayer);
 
-        //defining the geomeotry of the point
-        const point = { //Create a point
-          type: "point",
-          longitude: -97.750689,    //long lat of Stevie Ray Vaughan Statue
-          latitude: 30.263098 
-        };
-        
-        //defining the maker style
-        const simpleMarkerSymbol = {
-          type: "simple-marker",
-          color: [0, 0, 139],  // Color of blues rock
-          outline: {
-            color: [255, 255, 255], // White
-            width: 1
-          }
-        };
+      // Define a point's geometry
+      const point = {
+        type: "point",
+        longitude: -97.750689,
+        latitude: 30.263098 
+      };
 
-        //defining popup properties
-        const popupTemplate = {
-          title: "{Name}",
-          content: "{Description}"
+      // Define a simple marker symbol for the point
+      const simpleMarkerSymbol = {
+        type: "simple-marker",
+        color: [0, 0, 139],
+        outline: {
+          color: [255, 255, 255],
+          width: 1
         }
-        const attributes = {
-          Name: "Stevie Ray Vaughan Statue",
-          Description: "A bronze sculpture of Stevie Ray Vaughan by Ralph Helmick"
-        }
+      };
 
-        //creating the point
-        const pointGraphic = new Graphic({
-          geometry: point,
-          symbol: simpleMarkerSymbol,
+      // Define popup properties
+      const popupTemplate = {
+        title: "{Name}",
+        content: "{Description}"
+      };
 
-          //adding popup properites
-          attributes: attributes,
-          popupTemplate: popupTemplate
-        });
-         
-         //adding the point to the graphicsLayer
-         graphicsLayer.add(pointGraphic);
+      const attributes = {
+        Name: "Stevie Ray Vaughan Statue",
+        Description: "A bronze sculpture of Stevie Ray Vaughan by Ralph Helmick"
+      };
 
-         // Define a pop-up for usaeduLayer
-         const popupEduusa = {
-            "title": "EDUs",
-            "content": "<b>Name:</b> {NAME}<br><b>Total Enrollment:</b> {TOT_ENROLL}<br>"
-        }
+      // Create a graphic for the point with popup properties
+      const pointGraphic = new Graphic({
+        geometry: point,
+        symbol: simpleMarkerSymbol,
+        attributes: attributes,
+        popupTemplate: popupTemplate
+      });
 
-         //adding the const for the feature layer
-         const usaeduLayer = new FeatureLayer({
-          url: "https://services2.arcgis.com/FiaPA4ga0iQKduv3/arcgis/rest/services/Colleges_and_Universities_View/FeatureServer",
+      // Add the point graphic to the graphics layer
+      graphicsLayer.add(pointGraphic);
 
-          //adding the popup here
-          outFields: ["NAME","TOT_ENROLL"],
-          popupTemplate: popupEduusa
-        });
+      // Define a pop-up for the usaeduLayer
+      const popupEduusa = {
+        "title": "EDUs",
+        "content": "<b>Name:</b> {NAME}<br><b>Total Enrollment:</b> {TOT_ENROLL}<br>"
+      };
 
-        //adding the feature layer to the map
-        map.add(usaeduLayer);
+      // Create a feature layer for USA educational institutions
+      const usaeduLayer = new FeatureLayer({
+        url: "https://services2.arcgis.com/FiaPA4ga0iQKduv3/arcgis/rest/services/Colleges_and_Universities_View/FeatureServer",
+        outFields: ["NAME","TOT_ENROLL"],
+        popupTemplate: popupEduusa
+      });
 
+      // Add the feature layer to the map
+      map.add(usaeduLayer);
 
-        //setting up the icon
-        const airportRenderer = {
+      // Define a renderer for airport symbols
+      const airportRenderer = {
         "type": "simple",
         "symbol": {
           "type": "picture-marker",
@@ -113,10 +108,9 @@
           "width": "18px",
           "height": "18px"
         }
-      }
+      };
 
-      //const to make the airport labels
-
+      // Define label properties for airport symbols
       const airportLabels = {
         symbol: {
           type: "text",
@@ -130,38 +124,56 @@
             weight: "normal"
           }
         },
-
         labelPlacement: "above-center",
         labelExpressionInfo: {
           expression: "$feature.Fac_Name"
         }
       };
 
-        const airportLayer = new FeatureLayer({
-          url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/US_Airports/FeatureServer",
-          renderer: airportRenderer,  //calling the icon
+      // Create a feature layer for US airports
+      const airportLayer = new FeatureLayer({
+        url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/US_Airports/FeatureServer",
+        renderer: airportRenderer,
+        definitionExpression: "Fac_Type = 'AIRPORT'",
+        labelingInfo: [airportLabels]
+      });
 
-          definitionExpression: "Fac_Type = 'AIRPORT'", //adding sql to filter for airports
+      // Add the airport feature layer to the map
+      map.add(airportLayer);
 
-          labelingInfo: [airportLabels] //adding the labels 
+      // Create a feature layer for custom airports
+      const myAirports = new FeatureLayer({
+        url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Ally_Recalde_Airports/FeatureServer",
+        outFields: ["AirportCode"]
+      });
 
+      // Add the custom airport feature layer to the map
+      map.add(myAirports);
 
-        });
+      // Set the point layer's LayerInfo
+      const pointInfos = {
+        layer: myAirports
+      };
 
-        //adding the feature layer to the map
-        map.add(airportLayer);
+      // Create an Editor widget
+      const editor = new Editor({
+        view: view,
+        layerInfos: [pointInfos]
+      });
 
+      // Add the Editor widget to the view
+      view.ui.add(editor, "top-right");
     });
   </script>
 
-  <!-- css to make a full screen map -->
+  <!-- CSS to make a full-screen map -->
   <style>
     html,
     body,
     #viewDiv {
       padding: 0;
       margin: 0;
-      height: 100%; 
+      height: 100%;
       width: 100%;
     }
   </style>
@@ -169,7 +181,7 @@
 </head>
 <body>
 
-  <!-- the div to displays the map  -->
+  <!-- The div to display the map -->
   <div id="viewDiv"></div>
 
 </body>
