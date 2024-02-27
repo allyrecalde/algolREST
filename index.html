@@ -23,7 +23,7 @@
       "esri/layers/FeatureLayer",
       "esri/widgets/Editor",
       "esri/widgets/Legend" // Add Legend module
-    ], function (esriConfig, Map, MapView, Graphic, GraphicsLayer, FeatureLayer, Editor, Legend) {
+    ], function (esriConfig, Map, MapView, Graphic, GraphicsLayer, FeatureLayer, Editor, Legend ) {
       
       // Set API key
       esriConfig.apiKey = "AAPK433f41466d60440d91c1c31affdeed39q333BLHYUdTBT9x5jyyBb6p5XkRkl5eFjmdjMaBT3iK9RqETfIR9HgYcNRdNPvtL";
@@ -191,16 +191,15 @@
 
       // Add the Editor widget to the view
       view.ui.add(editor, "top-right");
-    });
 
-    // Create a Legend widget and add it to the view
-    const legend = new Legend({
+      // Create a Legend widget and add it to the view
+      const legend = new Legend({
         view: view
       });
 
       // Add the Legend widget to the bottom-right corner of the view
       view.ui.add(legend, "bottom-right");
-
+    });
   </script>
 
   <!-- CSS to make a full-screen map -->
