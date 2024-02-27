@@ -21,8 +21,9 @@
       "esri/Graphic",
       "esri/layers/GraphicsLayer",
       "esri/layers/FeatureLayer",
-      "esri/widgets/Editor"
-    ], function (esriConfig, Map, MapView, Graphic, GraphicsLayer, FeatureLayer, Editor) {
+      "esri/widgets/Editor",
+      "esri/widgets/Legend" // Add Legend module
+    ], function (esriConfig, Map, MapView, Graphic, GraphicsLayer, FeatureLayer, Editor, Legend) {
       
       // Set API key
       esriConfig.apiKey = "AAPK433f41466d60440d91c1c31affdeed39q333BLHYUdTBT9x5jyyBb6p5XkRkl5eFjmdjMaBT3iK9RqETfIR9HgYcNRdNPvtL";
@@ -144,7 +145,34 @@
       // Create a feature layer for custom airports
       const myAirports = new FeatureLayer({
         url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Ally_Recalde_Airports/FeatureServer",
-        outFields: ["AirportCode"]
+        outFields: ["AirportCode"],
+        renderer: {
+          type: "simple",
+          symbol: {
+            type: "picture-marker",
+            url: "https://www.iconsdb.com/icons/preview/black/airport-xxl.png", 
+            width: "18px",
+            height: "18px"
+          }
+        },
+        labelingInfo: [{
+          symbol: {
+            type: "text",
+            color: "#000000",
+            haloColor: "#FFFFFF",
+            haloSize: "1px",
+            font: {
+              size: "10px",
+              family: "Noto Sans",
+              style: "normal",
+              weight: "normal"
+            }
+          },
+          labelPlacement: "above-center",
+          labelExpressionInfo: {
+            expression: "$feature.AirportCode"
+          }
+        }]
       });
 
       // Add the custom airport feature layer to the map
@@ -164,6 +192,15 @@
       // Add the Editor widget to the view
       view.ui.add(editor, "top-right");
     });
+
+    // Create a Legend widget and add it to the view
+    const legend = new Legend({
+        view: view
+      });
+
+      // Add the Legend widget to the bottom-right corner of the view
+      view.ui.add(legend, "bottom-right");
+
   </script>
 
   <!-- CSS to make a full-screen map -->
